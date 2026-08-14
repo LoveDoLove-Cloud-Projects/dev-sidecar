@@ -33,6 +33,19 @@ uv sync
 .venv/Scripts/activate   # Windows; use `source .venv/bin/activate` on Linux/macOS
 ```
 
+## Committing Changes
+
+When work is finished and ready to commit, the AI assistant stages files, but the **human runs the commit command manually** — every contributor signs their own commits with their personal GPG/SSH key, which the assistant cannot access.
+
+1. **Review first**: run `git status`, `git diff`, and `git log --oneline -10` (to match the repo's message style). Stage only intended files; never stage secrets, build artifacts, or unrelated changes.
+2. **Stage properly**: use `git add <files>` for new/modified files and `git rm <files>` for deletions (or `git add -u` to record filesystem deletions). Verify the staged set with `git status` before proceeding.
+3. **Do NOT run `git commit` yourself.** Instead, print the **full `git commit` command** and let the user execute it manually, e.g.:
+   ```
+   git commit -m "fix(cli): 修复 xxx"
+   ```
+4. **Commit message style**: follow the repo's convention — a `type(scope): subject` prefix (`fix(scope):`, `feat(scope):`, `chore:`, ...) with a Chinese summary; include a body of bullet points for non-trivial changes. Do not add signing flags (`--no-gpg-sign`, `--no-verify`) or commit/push on the user's behalf unless explicitly requested.
+5. **Push only when explicitly asked**, and only after the user has committed.
+
 ## Architecture
 
 This is a **pnpm workspace monorepo** (`pnpm@9.13.2`) for a developer-sidecar proxy tool that accelerates access to GitHub, npm, Docker Hub, and other foreign sites for Chinese developers. It works by running a local MITM HTTPS proxy, injecting a root CA certificate, and applying DNS optimization, SNI rewriting, and request interception/redirection rules.
