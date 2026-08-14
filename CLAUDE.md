@@ -74,7 +74,7 @@ cli ──────────────────┴──────�
 ### Key conventions
 - **Module systems**: `core`, `mitmproxy`, and `cli` use implicit CommonJS (`.js` files, no `"type": "module"`). `gui` uses ESM (`"type": "module"`). The root `package.json` declares `"type": "module"` but this only affects root-level scripts.
 - **Shared JSON5 parser**: `@docmirror/mitmproxy/src/json` is used across all packages for JSON5 config parsing.
-- **Logging**: log4js-based; log files at `~/.dev-sidecar/logs/core.log`, `gui.log`, `server.log`. Logger factory at `packages/core/src/utils/util.logger.js`.
+- **Logging**: log4js-based; log files at `~/.dev-sidecar/logs/core.log`, `gui.log`, `server.log`. Logger factory at `packages/core/src/utils/util.logger.js`. Every category writes to file and, by default, also to stdout (`std` appender); set `DEV_SIDECAR_LOG_TO_CONSOLE=false` to keep logs file-only (CLI daemon sets this automatically).
 - **Status/event bus**: `core/src/event.js` (EventEmitter) and `core/src/status.js` (central status tree updated via events).
 - **CA certificate**: stored at `~/.dev-sidecar/dev-sidecar.ca.crt` and `~/.dev-sidecar/dev-sidecar.ca.key.pem`. Generated locally on first run.
 - **Config on disk**: user overrides saved as diffs in `~/.dev-sidecar/config.json`. Merged runtime config written as `running.json` for the child process.
